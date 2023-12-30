@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1 style="font-size:300%;text-align:center"> DATA FROM STM32</h1>
+    <p id="nhietdo" style="font-size:200%;text-align:center"> Nhiệt độ: <%= nhietdo %> 0C </p>
+    <p id="doam" style="font-size:200%;text-align:center"> Độ ẩm: <%= doam %> % </p> 
+    <p id="adc" style="font-size:200%;text-align:center">ADC quang trở: <%= adc %>  </p>
+    <p id="adc_doam" style="font-size:200%;text-align:center">ADC Độ ẩm đất: <%= adc_doam %>  </p>
+
+    <script>
+        const socket = io();
+
+        // Bắt sự kiện khi nhận được MQTT message qua WebSocket
+        socket.on('mqttMessage', (data) => {
+            // Cập nhật dữ liệu trên trang khi có tin nhắn mới
+            console.log('Received MQTT message:', data);
+            document.getElementById('nhietdo').innerText = `Nhiệt độ: ${data.nhietdo} 0C`;
+            document.getElementById('doam').innerText = `Độ ẩm: ${data.doam}%`;
+            document.getElementById('adc').innerText = `ADC quang trở: ${data.adc}`;
+            document.getElementById('adc_doam').innerText = `ADC Độ ẩm đất: ${data.adc_doam}`;
+        });
+    </script>
+</body>
+</html>
